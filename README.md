@@ -1,18 +1,32 @@
-# React + Vite
+# my-capstone
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend capstone project for the FlyRank internship track. This repo is a **React + Vite** starter app; the product features and UI will be built here as the capstone progresses.
 
-Currently, two official plugins are available:
+## Getting started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+**Requirements:** [Node.js](https://nodejs.org/) (LTS recommended) and npm.
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+Open the URL shown in the terminal (usually `http://localhost:5173`). Edit `src/App.jsx` and save to see hot reload.
 
-Note: This will impact Vite dev & build performances.
+Other scripts:
 
-## Expanding the ESLint configuration
+| Command | Purpose |
+| --- | --- |
+| `npm run build` | Production build to `dist/` |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## What's next
+
+- [ ] Define the capstone product goal and target users in this README.
+- [ ] Replace the Vite starter UI in `src/App.jsx` with your app shell (routing, layout, styling approach).
+- [ ] Document chosen styling and testing tools in [CLAUDE.md](./CLAUDE.md) when you pick them.
+
+## Stack notes
+
+This scaffold uses Vite 8, React 19, and the [React Compiler](https://react.dev/learn/react-compiler) (via Babel). For ESLint and TypeScript options, see the [Vite React TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) if you move to TypeScript later.
