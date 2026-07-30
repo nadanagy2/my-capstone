@@ -13,7 +13,7 @@ It's a frontend web application scaffolded with Vite + React.
 - **Build tool:** Vite
 - **Package manager:** npm
 - **Styling:** (fill in once decided — e.g. CSS Modules, Tailwind, plain CSS)
-- **Linting/formatting:** ESLint + Prettier (default Vite config, adjust as needed)
+- **Linting/formatting:** ESLint (selected during Vite scaffolding)
 - **Testing:** (fill in once decided — e.g. Vitest + React Testing Library)
 
 ## Commands
@@ -22,7 +22,7 @@ It's a frontend web application scaffolded with Vite + React.
 - `npm run dev` — start local dev server
 - `npm run build` — production build
 - `npm run preview` — preview the production build locally
-- `npm run lint` — run linter (once configured)
+- `npm run lint` — run ESLint
 
 ## Conventions
 
