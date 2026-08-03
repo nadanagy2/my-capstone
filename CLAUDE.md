@@ -45,3 +45,13 @@ It's a frontend web application scaffolded with Vite + React.
   this repo is also a learning artifact for the internship track.
 - Always propose the commit message in Conventional Commits format after
   completing a task.
+
+## Rules learned from the Round 1 vs Round 2 prompting drill
+
+- Every form component must ship with at least one test covering an invalid-input
+  case (empty required field, malformed value). Round 1's form had zero
+  validation and zero tests — it "saved" any input, including a blank form.
+- Forms use react-hook-form + zod for validation; never rely on a submit
+  handler that saves state unconditionally.
+- Every invalid form field must have both a visible inline error message and
+  aria-invalid + aria-describedby set — Round 1 had neither.
