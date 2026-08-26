@@ -1,10 +1,10 @@
 export default function AskPage() {
   return (
-    <div className="min-h-full bg-gray-50 p-6">
+    <div className="min-h-full bg-[var(--color-neutral-50)] p-6">
       <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl font-semibold mb-4">Ask Your Data</h1>
-        <div className="bg-white p-4 rounded shadow">
-          <label htmlFor="ask-input" className="block text-sm font-medium text-gray-700 sr-only">
+        <h1 className="text-2xl font-semibold mb-4 text-[var(--color-neutral-900)]">Ask Your Data</h1>
+        <div className="bg-[var(--color-neutral-0)] p-4 rounded" style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}>
+          <label htmlFor="ask-input" className="block text-sm font-medium text-[var(--color-neutral-700)] sr-only">
             Ask
           </label>
           <input
@@ -15,7 +15,7 @@ export default function AskPage() {
             aria-label="Ask your data"
             disabled
           />
-          <button className="px-4 py-2 rounded bg-gray-200 text-gray-600" disabled>
+          <button className="px-4 py-2 rounded bg-[var(--color-neutral-100)] text-[var(--color-neutral-700)]" disabled>
             Ask
           </button>
         </div>
