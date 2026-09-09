@@ -23,33 +23,182 @@ function ThinkingIndicator() {
   )
 }
 
-function MessageBubble({ message }) {
-  const isUser = message.role === 'user'
-
-  const text = Array.isArray(message.parts)
-    ? message.parts
-        .filter((part) => part.type === 'text')
-        .map((part) => part.text)
-        .join('')
-    : ''
+/**
+ * Renders a sales-query tool result as a real table + summary, not raw JSON.
+ * Handles both grouped (category/region) and raw daily-row shapes.
+ */
+function SalesResultTable({ output }) {
+  const { rows, totalRevenue, totalOrders, groupedBy } = output
+  const isGrouped = groupedBy !== 'none'
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
-      <div
-        className={`max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm ${
-          isUser
-            ? 'border-transparent bg-[var(--color-brand-600)] text-white'
-            : 'border-[var(--color-neutral-200)] bg-[var(--color-neutral-0)] text-[var(--color-neutral-900)]'
-        }`}
-      >
-        <p className="whitespace-pre-wrap text-sm leading-relaxed sm:text-base">{text}</p>
+    <div className="overflow-hidden rounded-xl border border-[var(--color-neutral-200)] bg-[var(--color-neutral-0)]">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--color-neutral-200)] bg-[var(--color-neutral-50)] px-4 py-2.5">
+        <span className="text-xs font-medium tracking-wide text-[var(--color-neutral-600)] uppercase">
+          Sales query result{isGrouped ? ` — grouped by ${groupedBy}` : ''}
+        </span>
+        <span className="text-sm font-semibold text-[var(--color-neutral-900)]">
+          ${totalRevenue.toLocaleString()} · {totalOrders} orders
+        </span>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm">
+          <thead>
+            <tr className="border-b border-[var(--color-neutral-200)] text-[var(--color-neutral-500)]">
+              {isGrouped ? (
+                <>
+                  <th className="px-4 py-2 font-medium">{groupedBy === 'category' ? 'Category' : 'Region'}</th>
+                  <th className="px-4 py-2 font-medium">Revenue</th>
+                  <th className="px-4 py-2 font-medium">Orders</th>
+                </>
+              ) : (
+                <>
+                  <th className="px-4 py-2 font-medium">Date</th>
+                  <th className="px-4 py-2 font-medium">Category</th>
+                  <th className="px-4 py-2 font-medium">Region</th>
+                  <th className="px-4 py-2 font-medium">Revenue</th>
+                  <th className="px-4 py-2 font-medium">Orders</th>
+                </>
+              )}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.length === 0 ? (
+              <tr>
+                <td colSpan={isGrouped ? 3 : 5} className="px-4 py-4 text-center text-[var(--color-neutral-500)]">
+                  No matching data.
+                </td>
+              </tr>
+            ) : isGrouped ? (
+              rows.map((row) => (
+                <tr key={row.key} className="border-b border-[var(--color-neutral-100)] last:border-0">
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">{row.key}</td>
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">${row.revenue.toLocaleString()}</td>
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">{row.orders}</td>
+                </tr>
+              ))
+            ) : (
+              rows.map((row) => (
+                <tr key={row.date} className="border-b border-[var(--color-neutral-100)] last:border-0">
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">{row.date}</td>
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">{row.category}</td>
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">{row.region}</td>
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">${row.revenue.toLocaleString()}</td>
+                  <td className="px-4 py-2 text-[var(--color-neutral-900)]">{row.orders}</td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
       </div>
     </div>
   )
 }
 
+/**
+ * Renders one tool-call part, with a visually distinct treatment for each
+ * of the four lifecycle states the AI SDK reports:
+ *   input-streaming  -> the model is still deciding what arguments to pass
+ *   input-available  -> arguments are finalized; the tool is about to run
+ *   output-available -> the tool succeeded; render the real result
+ *   output-error     -> the tool failed; show a designed error, not a crash
+ */
+function ToolCallPart({ part }) {
+  const { state, input, output, errorText } = part
+
+  if (state === 'input-streaming') {
+    return (
+      <div className="flex items-center gap-2 rounded-xl border border-dashed border-[var(--color-neutral-300)] bg-[var(--color-neutral-50)] px-3 py-2 text-xs text-[var(--color-neutral-500)]">
+        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[var(--color-neutral-400)]" />
+        Deciding what to look up...
+      </div>
+    )
+  }
+
+  if (state === 'input-available') {
+    return (
+      <div className="flex items-center gap-2 rounded-xl border border-[var(--color-brand-200)] bg-[var(--color-brand-50)] px-3 py-2 text-xs text-[var(--color-brand-700)]">
+        <span className="h-1.5 w-1.5 animate-spin rounded-full border-2 border-[var(--color-brand-400)] border-t-transparent" />
+        Querying sales data
+        {input?.startDate || input?.endDate ? (
+          <span className="font-medium">
+            ({input?.startDate ?? '…'} to {input?.endDate ?? '…'})
+          </span>
+        ) : null}
+        {input?.category ? <span className="font-medium">— {input.category}</span> : null}
+      </div>
+    )
+  }
+
+  if (state === 'output-available') {
+    return <SalesResultTable output={output} />
+  }
+
+  if (state === 'output-error') {
+    return (
+      <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700">
+        <span className="mt-0.5">⚠</span>
+        <div>
+          <p className="font-medium">Couldn't retrieve sales data.</p>
+          <p className="mt-0.5 text-xs text-red-600">{errorText ?? 'An unexpected error occurred.'}</p>
+        </div>
+      </div>
+    )
+  }
+
+  return null
+}
+
+
+/**
+ * Minimal inline-markdown renderer: only handles **bold** text, since
+ * that's the one markdown pattern the model reliably produces in this
+ * app. Avoids pulling in a full markdown library for one feature.
+ */
+function renderInlineMarkdown(text) {
+  const parts = text.split(/(\*\*[^*]+\*\*)/g)
+  return parts.map((part, index) => {
+    if (part.startsWith('**') && part.endsWith('**')) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>
+    }
+    return part
+  })
+}
+function MessageBubble({ message }) {
+  const isUser = message.role === 'user'
+  const parts = Array.isArray(message.parts) ? message.parts : []
+
+  const textContent = parts
+    .filter((part) => part.type === 'text')
+    .map((part) => part.text)
+    .join('')
+
+  const toolParts = parts.filter((part) => part.type?.startsWith('tool-'))
+
+  return (
+    <div className={`flex flex-col gap-2 ${isUser ? 'items-end' : 'items-start'}`}>
+      {toolParts.map((part, index) => (
+        <div key={part.toolCallId ?? index} className="w-full max-w-[85%]">
+          <ToolCallPart part={part} />
+        </div>
+      ))}
+
+      {textContent && (
+        <div
+          className={`max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm ${
+            isUser
+              ? 'border-transparent bg-[var(--color-brand-600)] text-white'
+              : 'border-[var(--color-neutral-200)] bg-[var(--color-neutral-0)] text-[var(--color-neutral-900)]'
+          }`}
+        >
+          <p className="whitespace-pre-wrap text-sm leading-relaxed sm:text-base">{renderInlineMarkdown(textContent)}</p>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function AskPage() {
-  // v7 useChat no longer manages the text input for you — own it yourself.
   const [input, setInput] = useState('')
 
   const { messages, sendMessage, status, stop, error } = useChat({
@@ -121,7 +270,7 @@ export default function AskPage() {
           >
             {messages.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-[var(--color-neutral-200)] bg-[var(--color-neutral-50)] p-4 text-sm text-[var(--color-neutral-600)]">
-                Ask a question to start the conversation.
+                Try asking: "What was our total revenue in August?" or "Show me sales grouped by category."
               </div>
             ) : (
               messages.map((message) => <MessageBubble key={message.id} message={message} />)

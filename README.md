@@ -1,6 +1,10 @@
-# my-capstone
+# my-capstone — Ask Your Data
 
-Frontend capstone project for the FlyRank internship track. This repo is a **React + Vite** starter app; the product features and UI will be built here as the capstone progresses.
+A manager-facing analytics dashboard where users ask questions about their
+data in plain language and get answers grounded in real (mock) data, via a
+streaming AI chat with server-side tool calling.
+
+Built for the FlyRank Frontend AI Engineering internship track.
 
 ## Getting started
 
@@ -11,22 +15,92 @@ npm install
 npm run dev
 ```
 
-Open the URL shown in the terminal (usually `http://localhost:5173`). Edit `src/App.jsx` and save to see hot reload.
+Open `http://localhost:3000`. Go to the **Ask** page to try the streaming
+chat with tool calling.
 
-Other scripts:
+### Environment variables
+
+Create a `.env.local` file (never committed) with:
+
+```
+GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-api-key
+```
+
+Get a free key at [aistudio.google.com/apikey](https://aistudio.google.com/apikey).
+
+## Screens
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Dashboard overview |
+| `/ask` | Streaming AI chat with tool calling (core feature) |
+| `/data` | Dataset view |
+| `/health` | Health-check page (fetches and renders mock status data) |
+| `/settings` | App settings (placeholder) |
+
+## Tool contract: `querySales`
+
+The `/ask` chat can call a server-side tool to answer questions using a mock
+sales dataset, defined in `lib/tools.ts`.
+
+**Name:** `querySales`
+
+**Description sent to the model:** Query the mock sales dataset for revenue
+and order data. Supports filtering by date range and category, and optional
+grouping by category or region.
+
+**Input schema (Zod):**
+```ts
+{
+  startDate?: string   // inclusive, "YYYY-MM-DD"
+  endDate?: string     // inclusive, "YYYY-MM-DD"
+  category?: string    // "Electronics" | "Apparel" | "Home"
+  groupBy?: "category" | "region" | "none"   // defaults to "none"
+}
+```
+All fields are optional — an empty call returns the full dataset.
+
+**Return shape:**
+```ts
+{
+  rows: Array<{ date, revenue, orders, category, region }>  // when groupBy is "none"
+      | Array<{ key, revenue, orders }>                      // when grouped
+  totalRevenue: number
+  totalOrders: number
+  groupedBy: "none" | "category" | "region"
+}
+```
+
+**Failure behavior:** an invalid `groupBy` value is rejected by the Zod
+schema before the tool ever executes, and the UI renders a designed error
+card rather than crashing. See `app/ask/page.js`'s `ToolCallPart` component
+for the four rendered states: `input-streaming`, `input-available`,
+`output-available`, `output-error`.
+
+## Known limitation
+
+This app uses Google Gemini's free tier (Anthropic's API requires paid
+credits, which weren't available for this project). The free tier has a
+daily request quota; if you see "The conversation could not be completed,"
+it's likely the quota was hit rather than a bug — this is handled gracefully
+rather than crashing the app.
+
+## Stack
+
+- Next.js (App Router), JavaScript
+- Tailwind CSS
+- Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/google`)
+- Zod for tool input validation
+- Deployed on Vercel
+
+## Other scripts
 
 | Command | Purpose |
 | --- | --- |
-| `npm run build` | Production build to `dist/` |
-| `npm run preview` | Serve the production build locally |
+| `npm run build` | Production build |
+| `npm run start` | Run the production build locally |
 | `npm run lint` | Run ESLint |
+| `npm run test` | Run Vitest |
 
-## What's next
-
-- [ ] Define the capstone product goal and target users in this README.
-- [ ] Replace the Vite starter UI in `src/App.jsx` with your app shell (routing, layout, styling approach).
-- [ ] Document chosen styling and testing tools in [CLAUDE.md](./CLAUDE.md) when you pick them.
-
-## Stack notes
-
-This scaffold uses Vite 8, React 19, and the [React Compiler](https://react.dev/learn/react-compiler) (via Babel). For ESLint and TypeScript options, see the [Vite React TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) if you move to TypeScript later.
+See [CLAUDE.md](./CLAUDE.md) for project conventions and [SPEC.md](./SPEC.md)
+for the product spec.

@@ -1,5 +1,6 @@
-import { streamText, convertToModelMessages, smoothStream } from 'ai'
+import { streamText, convertToModelMessages, smoothStream, stepCountIs } from 'ai'
 import { chatModel, systemPrompt, generationSettings } from '@/lib/ai-config'
+import { querySalesTool } from '@/lib/tools'
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30
@@ -17,6 +18,12 @@ export async function POST(req) {
     system: systemPrompt,
     messages: await convertToModelMessages(messages),
     temperature: generationSettings.temperature,
+    tools: {
+      querySales: querySalesTool,
+    },
+    // Allow the model to call a tool and then use the result to write its
+    // final answer, instead of stopping right after the tool call.
+    stopWhen: stepCountIs(3),
     // Gemini can stream in large, coarse chunks. smoothStream re-buffers
     // whatever chunk size the provider sends and re-emits it word by word,
     // so the UI shows a smooth, visible stream regardless of how the
