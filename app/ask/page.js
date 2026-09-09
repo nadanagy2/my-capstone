@@ -201,7 +201,7 @@ function MessageBubble({ message }) {
 export default function AskPage() {
   const [input, setInput] = useState('')
 
-  const { messages, sendMessage, status, stop, error } = useChat({
+  const { messages, sendMessage, status, stop, error, regenerate } = useChat({
     transport: new DefaultChatTransport({ api: '/api/chat' }),
   })
 
@@ -335,9 +335,16 @@ export default function AskPage() {
             )}
 
             {error && (
-              <p className="mt-3 text-sm text-red-600">
-                The conversation could not be completed. Please try again.
-              </p>
+              <div className="mt-3 flex items-center justify-between gap-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700">
+                <span>Something went wrong sending that message.</span>
+                <button
+                  type="button"
+                  onClick={() => regenerate()}
+                  className="shrink-0 rounded-lg border border-red-300 bg-white px-3 py-1.5 text-xs font-medium text-red-700 transition hover:bg-red-100"
+                >
+                  Retry
+                </button>
+              </div>
             )}
           </div>
         </div>
