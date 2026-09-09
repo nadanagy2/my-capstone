@@ -270,7 +270,22 @@ export default function AskPage() {
           >
             {messages.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-[var(--color-neutral-200)] bg-[var(--color-neutral-50)] p-4 text-sm text-[var(--color-neutral-600)]">
-                Try asking: "What was our total revenue in August?" or "Show me sales grouped by category."
+                <p className="mb-2">Ask a question about your sales data to get started. For example:</p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    'What was our total revenue in August?',
+                    'Show me sales grouped by category.',
+                  ].map((example) => (
+                    <button
+                      key={example}
+                      type="button"
+                      onClick={() => setInput(example)}
+                      className="rounded-full border border-[var(--color-neutral-300)] bg-[var(--color-neutral-0)] px-3 py-1.5 text-xs font-medium text-[var(--color-neutral-700)] transition hover:border-[var(--color-brand-400)] hover:bg-[var(--color-brand-50)] hover:text-[var(--color-brand-700)]"
+                    >
+                      {example}
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : (
               messages.map((message) => <MessageBubble key={message.id} message={message} />)
