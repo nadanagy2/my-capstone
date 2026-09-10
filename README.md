@@ -104,3 +104,34 @@ rather than crashing the app.
 
 See [CLAUDE.md](./CLAUDE.md) for project conventions and [SPEC.md](./SPEC.md)
 for the product spec.
+
+## 3D Revenue Skyline (`/visualize`)
+
+An interactive 3D bar chart built with React Three Fiber, visualizing the
+same mock sales dataset used by the "Ask" tool-calling feature — each bar
+represents one day's revenue, colored by category.
+
+**Interactions:**
+- Orbit/zoom the scene (mouse drag + scroll, or touch drag + pinch on mobile)
+- Hover a bar for a floating tooltip with date, revenue, and category
+- Click a bar to dim all other categories (click again to clear the filter)
+
+**Responsible loading:**
+- The 3D canvas is lazy-loaded via `next/dynamic` with `ssr: false`, so
+  Three.js only loads on this specific route, not on every page load
+- No external 3D models — geometry is generated from data, keeping the
+  bundle lean
+- Respects `prefers-reduced-motion`: renders a static 2D bar chart instead
+  of the 3D scene when the user's system requests reduced motion
+
+**Perf note:** On first load (cache disabled), the page transfers ~554 kB
+across 24 requests (~1.8 MB total resources including cached chunks), with
+a full load time around 2.7s on a throttled connection profile. Interaction
+(orbit/hover/click) felt smooth in manual testing on both desktop and a
+simulated mobile viewport; a full frame-rate profile with DevTools'
+Performance panel would be the next step to get exact numbers.
+
+**With more time, I'd add:** a proper FPS/performance profile with DevTools,
+level-of-detail reduction for larger datasets, and wiring the click-filter
+to actually filter the `/data` table view too, so the 3D chart and the rest
+of the dashboard stay in sync.
