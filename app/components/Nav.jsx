@@ -9,22 +9,22 @@ export default function Nav() {
           aria-label="Main navigation"
           className="flex gap-1 overflow-x-auto whitespace-nowrap -mx-1 px-1"
         >
-          <Link href="/" className="px-3 py-2 rounded shrink-0" style={{ color: 'var(--color-neutral-700)' }}>
+          <Link href="/" className="px-3 py-2 rounded shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" style={{ color: 'var(--color-neutral-700)' }}>
             Dashboard
           </Link>
-          <Link href="/ask" prefetch={false} className="px-3 py-2 rounded shrink-0" style={{ color: 'var(--color-neutral-700)' }}>
+          <Link href="/ask" prefetch={false} className="px-3 py-2 rounded shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" style={{ color: 'var(--color-neutral-700)' }}>
             Ask
           </Link>
-          <Link href="/data" className="px-3 py-2 rounded shrink-0" style={{ color: 'var(--color-neutral-700)' }}>
+          <Link href="/data" className="px-3 py-2 rounded shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" style={{ color: 'var(--color-neutral-700)' }}>
             Data
           </Link>
-          <Link href="/visualize" prefetch={false} className="px-3 py-2 rounded shrink-0" style={{ color: 'var(--color-neutral-700)' }}>
+          <Link href="/visualize" prefetch={false} className="px-3 py-2 rounded shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" style={{ color: 'var(--color-neutral-700)' }}>
             Visualize
           </Link>
-          <Link href="/health" className="px-3 py-2 rounded shrink-0" style={{ color: 'var(--color-neutral-700)' }}>
+          <Link href="/health" className="px-3 py-2 rounded shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" style={{ color: 'var(--color-neutral-700)' }}>
             Health
           </Link>
-          <Link href="/settings" className="px-3 py-2 rounded shrink-0" style={{ color: 'var(--color-neutral-700)'}}>
+          <Link href="/settings" className="px-3 py-2 rounded shrink-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600" style={{ color: 'var(--color-neutral-700)' }}>
             Settings
           </Link>
         </nav>
