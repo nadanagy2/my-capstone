@@ -14,19 +14,19 @@ export default function DataPage() {
             </thead>
             <tbody>
               <tr className="border-b" style={{ borderColor: 'var(--color-neutral-100)' }}>
-                <td className="py-2 px-3">1</td>
-                <td className="py-2 px-3">Users</td>
-                <td className="py-2 px-3">Table</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">1</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">Users</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">Table</td>
               </tr>
               <tr className="border-b" style={{ borderColor: 'var(--color-neutral-100)' }}>
-                <td className="py-2 px-3">2</td>
-                <td className="py-2 px-3">Orders</td>
-                <td className="py-2 px-3">Table</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">2</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">Orders</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">Table</td>
               </tr>
               <tr>
-                <td className="py-2 px-3">3</td>
-                <td className="py-2 px-3">Events</td>
-                <td className="py-2 px-3">Stream</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">3</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">Events</td>
+                <td className="py-2 px-3 text-[var(--color-neutral-900)]">Stream</td>
               </tr>
             </tbody>
           </table>
