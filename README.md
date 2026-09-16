@@ -135,3 +135,9 @@ Performance panel would be the next step to get exact numbers.
 level-of-detail reduction for larger datasets, and wiring the click-filter
 to actually filter the `/data` table view too, so the 3D chart and the rest
 of the dashboard stay in sync.
+
+Signature hero shader (app/components/AuroraHero.jsx)
+
+The Dashboard's hero section uses a custom GLSL fragment shader — an interactive aurora-style gradient built from four overlapping sine waves in a blue/purple palette, with the flow field bending gently toward the cursor. Uses u_time (animates the waves) and u_resolution (aspect-ratio correction) as core uniforms, plus a custom mouse-position uniform for the interactive bend.
+
+Perf/reduced-motion fallback in one line: devicePixelRatio is capped at 1.5, the render loop pauses entirely when the browser tab is hidden (Page Visibility API), and prefers-reduced-motion skips mounting the WebGL canvas altogether in favor of a static CSS gradient using the same color palette.
