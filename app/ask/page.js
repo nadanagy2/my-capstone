@@ -255,7 +255,7 @@ export default function AskPage() {
   }
 
   return (
-    <div className="min-h-full bg-[var(--color-neutral-50)] p-4 sm:p-6">
+    <div className="min-h-screen bg-[var(--color-neutral-50)] p-4 sm:p-6">
       <div className="mx-auto max-w-5xl">
         <h1 className="mb-4 text-2xl font-semibold text-[var(--color-neutral-900)]">Ask Your Data</h1>
 

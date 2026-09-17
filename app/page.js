@@ -24,7 +24,7 @@ export default function DashboardPage() {
   const sortedRecords = [...salesRecords].sort((a, b) => a.date.localeCompare(b.date))
 
   return (
-    <div className="min-h-full bg-[var(--color-neutral-50)]">
+    <div className="min-h-screen bg-[var(--color-neutral-50)]">
       <section className="relative h-[360px] overflow-hidden">
         <AuroraHero />
         <div className="relative z-10 flex h-full flex-col items-start justify-center px-6 sm:px-10 pointer-events-none">

@@ -4,7 +4,7 @@ export default async function HealthPage() {
   const data = await getData()
 
   return (
-    <div className="min-h-full bg-[var(--color-neutral-50)] p-6">
+    <div className="min-h-screen bg-[var(--color-neutral-50)] p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-2xl font-semibold mb-4 text-[var(--color-neutral-900)]">Health</h1>
 

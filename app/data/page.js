@@ -4,7 +4,7 @@ export default function DataPage() {
   const sorted = [...salesRecords].sort((a, b) => a.date.localeCompare(b.date))
 
   return (
-    <div className="min-h-full bg-[var(--color-neutral-50)] p-6">
+    <div className="min-h-screen bg-[var(--color-neutral-50)] p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-2xl font-semibold mb-1 text-[var(--color-neutral-900)]">Dataset</h1>
         <p className="text-sm text-[var(--color-neutral-600)] mb-4">
