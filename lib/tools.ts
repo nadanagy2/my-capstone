@@ -5,7 +5,7 @@ import { querySales } from './sales-data'
 /**
  * Tool contract: querySales
  *
- * Lets the assistant query the mock sales dataset to answer manager
+ * Lets the assistant query the user's real sales dataset to answer manager
  * questions about revenue and order volume.
  *
  * Input schema:
@@ -28,7 +28,7 @@ import { querySales } from './sales-data'
  */
 export const querySalesTool = tool({
   description:
-    'Query the mock sales dataset for revenue and order data. Supports filtering by date range and category, and optional grouping by category or region. Use this whenever the user asks a question about sales, revenue, or orders.',
+    "Query the user's real sales dataset for revenue and order data. Supports filtering by date range and category, and optional grouping by category or region. Use this whenever the user asks a question about sales, revenue, or orders.",
   inputSchema: z.object({
     startDate: z
       .string()
