@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: '/ask', label: 'Ask', prefetch: false },
   { href: '/data', label: 'Data' },
   { href: '/upload', label: 'Upload', prefetch: false },
+  { href: '/datasets', label: 'Datasets', prefetch: false },
   { href: '/visualize', label: 'Visualize', prefetch: false },
   { href: '/health', label: 'Health' },
   { href: '/settings', label: 'Settings' },
