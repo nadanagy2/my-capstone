@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: '/', label: 'Dashboard' },
   { href: '/ask', label: 'Ask', prefetch: false },
   { href: '/data', label: 'Data' },
+  { href: '/upload', label: 'Upload', prefetch: false },
   { href: '/visualize', label: 'Visualize', prefetch: false },
   { href: '/health', label: 'Health' },
   { href: '/settings', label: 'Settings' },
