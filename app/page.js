@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import AuroraHero from './components/AuroraHero'
 import RevenueTrendChart from './components/RevenueTrendChart'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
@@ -52,10 +53,23 @@ export default async function DashboardPage() {
       <div className="p-6">
         <div className="max-w-5xl mx-auto space-y-6">
           {sortedRecords.length === 0 ? (
-            <div className="p-6 bg-[var(--color-neutral-0)] rounded-xl border border-[var(--color-neutral-100)] text-center">
-              <p className="text-[var(--color-neutral-700)]">
-                No sales data yet. Head to the Data page once you've added some records.
+            <div
+              className="p-8 bg-[var(--color-neutral-0)] rounded-xl border border-[var(--color-neutral-100)] text-center"
+              style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}
+            >
+              <h2 className="text-lg font-semibold text-[var(--color-neutral-900)]">
+                No sales data yet
+              </h2>
+              <p className="mt-2 mx-auto max-w-md text-sm text-[var(--color-neutral-700)]">
+                Upload a CSV of your sales and this dashboard fills in with your revenue,
+                orders and top category. You can then ask questions about it in plain English.
               </p>
+              <Link
+                href="/upload"
+                className="mt-5 inline-block rounded-lg bg-[var(--color-brand-600)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-brand-500)] transition"
+              >
+                Upload your data
+              </Link>
             </div>
           ) : (
             <>

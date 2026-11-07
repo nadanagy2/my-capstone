@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
 import { querySales } from '@/lib/sales-data'
 
@@ -24,9 +25,17 @@ export default async function DataPage() {
         </p>
         <div className="bg-[var(--color-neutral-0)] p-4 rounded overflow-auto" style={{ boxShadow: '0 1px 6px rgba(0,0,0,0.06)' }}>
           {rows.length === 0 ? (
-            <p className="text-sm text-[var(--color-neutral-500)] py-4">
-              No sales records yet.
-            </p>
+            <div className="py-8 text-center">
+              <p className="text-sm text-[var(--color-neutral-700)]">
+                You haven't added any sales records yet.
+              </p>
+              <Link
+                href="/upload"
+                className="mt-4 inline-block rounded-lg bg-[var(--color-brand-600)] px-4 py-2 text-sm font-medium text-white hover:bg-[var(--color-brand-500)] transition"
+              >
+                Upload a CSV
+              </Link>
+            </div>
           ) : (
             <table className="min-w-full text-left">
               <thead>
