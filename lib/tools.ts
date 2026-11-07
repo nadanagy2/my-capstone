@@ -5,13 +5,14 @@ import { querySales } from './sales-data'
 /**
  * Tool contract: querySales
  *
- * Lets the assistant query the user's real sales dataset to answer manager
- * questions about revenue and order volume.
+ * Lets the assistant query the logged-in user's own sales data to answer
+ * questions about revenue and order volume. It only ever sees that user's
+ * rows (enforced in querySales and by Row Level Security in the database).
  *
- * Input schema:
+ * Input schema (all fields optional):
  *   - startDate?: string  (ISO date, e.g. "2026-08-01") — inclusive lower bound
  *   - endDate?: string    (ISO date) — inclusive upper bound
- *   - category?: string   ("Electronics" | "Apparel" | "Home") — filter to one category
+ *   - category?: string   a category name from the user's data (case-insensitive)
  *   - groupBy?: "category" | "region" | "none" — how to aggregate results
  *
  * Return shape:
@@ -23,12 +24,12 @@ import { querySales } from './sales-data'
  *     groupedBy: "none" | "category" | "region"
  *   }
  *
- * Every field is optional except none are required — an empty call returns
- * the full dataset, so the model always has a safe default to fall back on.
+ * An empty call returns all of the user's data, so the model always has a
+ * safe default to fall back on.
  */
 export const querySalesTool = tool({
   description:
-    "Query the user's real sales dataset for revenue and order data. Supports filtering by date range and category, and optional grouping by category or region. Use this whenever the user asks a question about sales, revenue, or orders.",
+    "Query the logged-in user's own sales data for revenue and order figures. Supports filtering by date range and category, and optional grouping by category or region. Use this whenever the user asks a question about their sales, revenue, or orders.",
   inputSchema: z.object({
     startDate: z
       .string()
@@ -41,16 +42,15 @@ export const querySalesTool = tool({
     category: z
       .string()
       .optional()
-      .describe('Filter to one category: "Electronics", "Apparel", or "Home". Omit to include all categories.'),
+      .describe("Filter to a single category, using a category name that exists in the user's own data (matching is case-insensitive). If you are not sure which categories exist, call this tool with groupBy set to category first. Omit to include all categories."),
     groupBy: z
       .enum(['category', 'region', 'none'])
       .optional()
       .describe('Aggregate results by category or region, or "none" for raw daily rows. Defaults to "none".'),
   }),
   execute: async ({ startDate, endDate, category, groupBy }) => {
-    // Intentionally allowed to throw if querySales fails (e.g. bad input
-    // slipping past the schema) — the client renders this as a designed
-    // error state rather than crashing, per the assignment's requirement.
+    // Intentionally allowed to throw if querySales fails — the chat renders
+    // that as a designed error state rather than crashing.
     return querySales({ startDate, endDate, category, groupBy })
   },
 })
