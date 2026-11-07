@@ -74,11 +74,11 @@ export default function LoginPage() {
               id="password"
               type="password"
               required
-              minLength={6}
+              minLength={10}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full border rounded px-3 py-2"
-              placeholder="At least 6 characters"
+              placeholder="At least 10 characters"
             />
           </div>
 
